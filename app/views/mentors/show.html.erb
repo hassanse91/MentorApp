@@ -21,5 +21,21 @@
 </p>
 
 <%= link_to 'Edit', edit_mentor_path(@mentor) %> |
-<%= link_to 'Back', mentors_path %>
-<%= link_to "New matiere", mentor_matiere_path(@mentor) %>
+<%= link_to 'Back', mentors_path %> |
+<%= link_to "New matiere", new_mentor_matiere_path(@mentor) %> |
+<%= link_to "reservation", new_mentor_reservation_path(@mentor) %>
+
+<hr>
+<p>
+<h1>Matieres Enseignées (<%= @matieres.count %>)</h1>
+	<% @matieres.each do |matiere| %>
+	<hr>
+		<h3><%= matiere.Name %></h3>
+		<p><%= matiere.Presentation %></p>
+		<% if @mentor.user == current_user %>
+						<%= link_to "edit matiere", edit_mentor_matiere_path(@mentor, matiere), class: "btn btn-primary" %>
+				<%= link_to "Delete matiere", [matiere.mentor, matiere], method: :delete, data: { confirm: 'Are you sure ?' }, class: "btn btn-primary" %>
+		<% end %>
+	<% end %>
+</p>
+

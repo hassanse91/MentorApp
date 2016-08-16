@@ -1,6 +1,6 @@
 class MatieresController < ApplicationController
   before_action :set_matiere, only: [:show, :edit, :update, :destroy]
-
+  before_action :set_mentor
   # GET /matieres
   # GET /matieres.json
   def index
@@ -23,33 +23,31 @@ class MatieresController < ApplicationController
 
   # POST /matieres
   # POST /matieres.json
-  def create
-    @mentor =Mentor.find(params[:mentor_id])
-    @matiere = @mentor.matieres.new(matiere_params)
+    def create
+        @mentor = Mentor.find(params[:mentor_id])
+        @matiere = @mentor.matieres.new(matiere_params)
 
-    respond_to do |format|
-      if @matiere.save
-        format.html { redirect_to @mentor, notice: 'Matiere was successfully created.' }
-        format.json { render :show, status: :created, location: @matiere }
-      else
-        format.html { render :new }
-        format.json { render json: @matiere.errors, status: :unprocessable_entity }
+        respond_to do |format|
+          if @matiere.save
+            format.html { redirect_to @mentor, notice: 'Matiere was successfully created.' }
+            format.json { render json: @matiere, status: :created, location: @matiere }
+          else
+            format.html { render :new }
+            format.json { render json: @matiere.errors, status: :unprocessable_entity }
+          end
+        end
       end
-    end
-  end
 
   # PATCH/PUT /matieres/1
   # PATCH/PUT /matieres/1.json
-  def update
-    respond_to do |format|
+ def update
+   
       if @matiere.update(matiere_params)
-        format.html { redirect_to @matiere, notice: 'Matiere was successfully updated.' }
-        format.json { render :show, status: :ok, location: @matiere }
+        redirect_to @mentor
       else
-        format.html { render :edit }
-        format.json { render json: @matiere.errors, status: :unprocessable_entity }
+      render :edit
       end
-    end
+   
   end
 
   # DELETE /matieres/1
@@ -57,7 +55,7 @@ class MatieresController < ApplicationController
   def destroy
     @matiere.destroy
     respond_to do |format|
-      format.html { redirect_to matieres_url, notice: 'Matiere was successfully destroyed.' }
+      format.html { redirect_to :back, notice: 'Matiere was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -66,6 +64,10 @@ class MatieresController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_matiere
       @matiere = Matiere.find(params[:id])
+    end
+    def set_mentor
+     @mentor = Mentor.find(params[:mentor_id])
+      
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

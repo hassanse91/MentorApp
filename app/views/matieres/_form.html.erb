@@ -1,25 +1,7 @@
-<%= form_for(@matiere) do |f| %>
-  <% if @matiere.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@matiere.errors.count, "error") %> prohibited this matiere from being saved:</h2>
+<%= simple_form_for([@mentor, @matiere]) do |f| %>
+  
+  <%= f.select :Name, ['Mathematique', 'Physique', 'Chimie']%>
+    <%= f.input :Presentation %>
+    <%= f.button :submit %>
 
-      <ul>
-      <% @matiere.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="field">
-    <%= f.label :Name %><br>
-    <%= f.text_field :Name %>
-  </div>
-  <div class="field">
-    <%= f.label :Presentation %><br>
-    <%= f.text_area :Presentation %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
 <% end %>

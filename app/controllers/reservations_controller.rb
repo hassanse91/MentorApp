@@ -1,6 +1,8 @@
 class ReservationsController < ApplicationController
   before_action :set_reservation, only: [:show, :edit, :update, :destroy]
 
+  before_action :set_mentor
+  before_action :set_matiere
   # GET /reservations
   # GET /reservations.json
   def index
@@ -9,13 +11,12 @@ class ReservationsController < ApplicationController
 
   # GET /reservations/1
   # GET /reservations/1.json
-  def show
-  end
-
-  # GET /reservations/new
-  def new
+  
+def new
     @reservation = Reservation.new
   end
+  # GET /reservations/new
+  
 
   # GET /reservations/1/edit
   def edit
@@ -24,17 +25,16 @@ class ReservationsController < ApplicationController
   # POST /reservations
   # POST /reservations.json
   def create
-    @reservation = Reservation.new(reservation_params)
+    @mentor = Mentor.find(params[:mentor_id])
+    @matiere = Matiere.find(params[:matiere_id])
+    @reservation = @mentor.reservation.new(reservation_params)
+    @reservation.matiere = @matiere
 
-    respond_to do |format|
-      if @reservation.save
-        format.html { redirect_to @reservation, notice: 'Reservation was successfully created.' }
-        format.json { render :show, status: :created, location: @reservation }
+    if @reservation.save 
+        redirect_to @mentor
       else
-        format.html { render :new }
-        format.json { render json: @reservation.errors, status: :unprocessable_entity }
+        render 'new'
       end
-    end
   end
 
   # PATCH/PUT /reservations/1
@@ -63,10 +63,17 @@ class ReservationsController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
+    
+    def set_mentor
+     @mentor = Mentor.find(params[:mentor_id])
+      
+    end
+    def set_matiere
+     @matiere = Matiere.find(params[:matiere_id])
+    end
     def set_reservation
       @reservation = Reservation.find(params[:id])
     end
-
     # Never trust parameters from the scary internet, only allow the white list through.
     def reservation_params
       params.require(:reservation).permit(:matiere_id, :mentor_id, :date)

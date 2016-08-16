@@ -10,6 +10,7 @@ class MentorsController < ApplicationController
   # GET /mentors/1
   # GET /mentors/1.json
   def show
+    @matieres =Matiere.where(mentor_id: @mentor.id)
   end
 
   # GET /mentors/new
