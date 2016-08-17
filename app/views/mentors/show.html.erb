@@ -23,7 +23,12 @@
 <%= link_to 'Edit', edit_mentor_path(@mentor) %> |
 <%= link_to 'Back', mentors_path %> |
 <%= link_to "New matiere", new_mentor_matiere_path(@mentor) %> |
+<% if @mentor.user != current_user %>
 <%= link_to "reservation", new_mentor_reservation_path(@mentor) %>
+<% end %>
+<%= link_to "Voir les reservation", reservations_path %>
+
+
 
 <hr>
 <p>

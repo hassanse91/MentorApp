@@ -6,6 +6,7 @@
   <thead>
     <tr>
       <th>Matiere</th>
+      <th>Student</th>
       <th>Mentor</th>
       <th>Date</th>
       <th colspan="3"></th>
@@ -15,17 +16,14 @@
   <tbody>
     <% @reservations.each do |reservation| %>
       <tr>
-        <td><%= reservation.matiere %></td>
-        <td><%= reservation.mentor %></td>
-        <td><%= reservation.date %></td>
-        <td><%= link_to 'Show', reservation %></td>
-        <td><%= link_to 'Edit', edit_reservation_path(reservation) %></td>
-        <td><%= link_to 'Destroy', reservation, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= reservation.matiere.Name %></td>
+        <td><%= reservation.student.FirstName %> </td>
+        <td><%= reservation.mentor.FirstName %></td>
+       La date de la seance est: <%= reservation.date %>
+        
+        <td><%= link_to 'Edit', edit_mentor_reservation_path(reservation.mentor, reservation) %></td>
+        <td><%= link_to 'Destroy', mentor_reservation_path(reservation.mentor, reservation), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
-
-<br>
-
-<%= link_to 'New Reservation', new_reservation_path %>

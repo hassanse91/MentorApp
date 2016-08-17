@@ -11,6 +11,7 @@ class MentorsController < ApplicationController
   # GET /mentors/1.json
   def show
     @matieres =Matiere.where(mentor_id: @mentor.id)
+    @student = Student.where(user_id: current_user.id) 
   end
 
   # GET /mentors/new

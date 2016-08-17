@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160815220550) do
+ActiveRecord::Schema.define(version: 20160817013148) do
 
   create_table "matieres", force: :cascade do |t|
     t.string   "Name"
@@ -38,13 +38,26 @@ ActiveRecord::Schema.define(version: 20160815220550) do
   create_table "reservations", force: :cascade do |t|
     t.integer  "matiere_id"
     t.integer  "mentor_id"
-    t.date     "date"
+    t.datetime "date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "student_id"
+    t.time     "time"
   end
 
   add_index "reservations", ["matiere_id"], name: "index_reservations_on_matiere_id"
   add_index "reservations", ["mentor_id"], name: "index_reservations_on_mentor_id"
+  add_index "reservations", ["student_id"], name: "index_reservations_on_student_id"
+
+  create_table "students", force: :cascade do |t|
+    t.string   "FirstName"
+    t.string   "LastName"
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "students", ["user_id"], name: "index_students_on_user_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false

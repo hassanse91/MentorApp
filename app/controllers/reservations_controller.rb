@@ -1,18 +1,20 @@
 class ReservationsController < ApplicationController
   before_action :set_reservation, only: [:show, :edit, :update, :destroy]
-
-  before_action :set_mentor
-  before_action :set_matiere
+  before_action :set_mentor, only: [:new, :show, :create, :edit, :destroy, :update]
+  
   # GET /reservations
   # GET /reservations.json
   def index
-    @reservations = Reservation.all
+      @reservations = Reservation.all
   end
 
+  def show
+    
+  end
   # GET /reservations/1
   # GET /reservations/1.json
   
-def new
+  def new
     @reservation = Reservation.new
   end
   # GET /reservations/new
@@ -25,13 +27,12 @@ def new
   # POST /reservations
   # POST /reservations.json
   def create
-    @mentor = Mentor.find(params[:mentor_id])
-    @matiere = Matiere.find(params[:matiere_id])
-    @reservation = @mentor.reservation.new(reservation_params)
-    @reservation.matiere = @matiere
-
+    
+    @reservation = @mentor.reservations.new(reservation_params)
+    @reservation.student_id = Student.where(user_id: current_user.id).first.id
+    @reservation.save
     if @reservation.save 
-        redirect_to @mentor
+        redirect_to mentor_reservations_path
       else
         render 'new'
       end
@@ -40,15 +41,13 @@ def new
   # PATCH/PUT /reservations/1
   # PATCH/PUT /reservations/1.json
   def update
-    respond_to do |format|
+   
       if @reservation.update(reservation_params)
-        format.html { redirect_to @reservation, notice: 'Reservation was successfully updated.' }
-        format.json { render :show, status: :ok, location: @reservation }
+        redirect_to @mentor
       else
-        format.html { render :edit }
-        format.json { render json: @reservation.errors, status: :unprocessable_entity }
+        render 'edit'
       end
-    end
+    
   end
 
   # DELETE /reservations/1
@@ -68,14 +67,17 @@ def new
      @mentor = Mentor.find(params[:mentor_id])
       
     end
-    def set_matiere
-     @matiere = Matiere.find(params[:matiere_id])
-    end
+   def set_student
+     @student = Student.find(params[:student_id])
+   end
+
     def set_reservation
       @reservation = Reservation.find(params[:id])
     end
+    
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def reservation_params
-      params.require(:reservation).permit(:matiere_id, :mentor_id, :date)
+      params.require(:reservation).permit(:matiere_id, :mentor_id, :student_id, :date, :time)
     end
 end

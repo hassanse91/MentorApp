@@ -1,7 +1,10 @@
 Rails.application.routes.draw do
-  root 'home#index'
-  
   devise_for :users
+  resources :reservations
+  resources :students do
+    resources :reservations
+  end
+  root 'home#index'
   resources :mentors do
     resources :matieres 
     resources :reservations 
